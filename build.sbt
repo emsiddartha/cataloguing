@@ -16,12 +16,15 @@ val mongodb = "org.mongodb.scala" %% "mongo-scala-driver" % "2.7.0"
 val typesafe = "com.github.pureconfig" %% "pureconfig" % "0.11.1"
 val jwtJson4s = "com.pauldijou" %% "jwt-json4s-jackson" % "4.0.0"
 
+resolvers in Global := Seq(Resolver.mavenLocal)
 
 val utillib = "org.bheaver.ngl4" %% "util-lib" % "0.1"
 val scalatime = "com.github.nscala-time" %% "nscala-time" % "2.22.0"
 
 val asyncHttpClient = "com.softwaremill.sttp" %% "async-http-client-backend-future" % "1.6.5"
 val scalajava8 = "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0"
+
+val marc4j = "org.marc4j" % "marc4j" % "1.0"
 
 lazy val core = (project in file("core")).dependsOn(protocol).settings(
   name := "cataloguing-core",
@@ -37,7 +40,8 @@ lazy val core = (project in file("core")).dependsOn(protocol).settings(
   libraryDependencies += jwtJson4s,
   libraryDependencies += utillib,
   libraryDependencies += scalatime,
-  libraryDependencies += scalajava8
+  libraryDependencies += scalajava8,
+  libraryDependencies += marc4j
 )
 
 lazy val protocol = (project in file("protocol")).settings(
