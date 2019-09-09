@@ -26,7 +26,7 @@ class ParseCatalogueRecordTest extends AsyncUnitTestBase {
       .map(record => {
         val records = record.records
         assert(records.size==1)
-        assert(records.head.getDatafieldsByTag("245").head.getSubfieldsByIdentifier('a').head.data.equals("Indian Arm /"))
+        assert(records.head.getDatafieldsByTag("245").head.getSubfieldsByIdentifier("a").head.data.equals("Indian Arm /"))
       })
   }
   it should "be able to parse multiple isorecords separated by record delimiter" in {

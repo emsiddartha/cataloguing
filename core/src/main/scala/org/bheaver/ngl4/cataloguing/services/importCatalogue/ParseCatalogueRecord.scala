@@ -48,8 +48,8 @@ class ParseCatalogueRecordImpl extends ParseCatalogueRecord {
     val leader = record.getLeader.marshal()
     val controlFields = record.getControlFields.asScala.toList.map(controlField => NGLControlfield(controlField.getTag, controlField.getData))
     val dataFields = record.getDataFields.asScala.toList.map(dataField =>
-      NGLDatafield(dataField.getTag, dataField.getIndicator1, dataField.getIndicator2,
-        dataField.getSubfields.asScala.toList.map(subField => NGLSubfield(subField.getCode, subField.getData))
+      NGLDatafield(dataField.getTag, charToString(dataField.getIndicator1), charToString(dataField.getIndicator2),
+        dataField.getSubfields.asScala.toList.map(subField => NGLSubfield(charToString(subField.getCode), subField.getData))
       )
     )
     NGLRecord(leader, controlFields, dataFields)
