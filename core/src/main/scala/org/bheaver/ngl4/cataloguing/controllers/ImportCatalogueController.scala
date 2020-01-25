@@ -3,8 +3,8 @@ package org.bheaver.ngl4.cataloguing.controllers
 import java.util.concurrent.CompletionStage
 
 import javax.servlet.http.HttpServletResponse
+import org.bheaver.ngl4.cataloguing.conf.BeanRegistry
 import org.bheaver.ngl4.cataloguing.services.importCatalogue.ParseCatalogueRecord
-import org.springframework.beans.factory.annotation.{Autowired, Qualifier}
 import org.springframework.web.bind.annotation._
 import org.bheaver.ngl4.cataloguing.model.importCatalogueModel._
 import org.bheaver.ngl4.util.exceptions.HTTPException
@@ -14,13 +14,12 @@ import org.bheaver.ngl4.util.json.ExceptionJSONGenerator._
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization._
 import org.springframework.http.MediaType
+
 @RestController
 @RequestMapping(Array("/cataloguing/importCatalogue"))
 class ImportCatalogueController {
 
-  @Autowired
-  @Qualifier("ParseCatalogueRecord")
-  var parseCatalogueRecord: ParseCatalogueRecord = null
+  var parseCatalogueRecord: ParseCatalogueRecord = BeanRegistry.getParseCatalogueRecordService
 
   @GetMapping(value = Array("/parse"), produces = Array(MediaType.APPLICATION_JSON_VALUE))
   def parse(@RequestParam isoRecord: String, @RequestParam requestId: String, httpServletResponse: HttpServletResponse): CompletionStage[String] =

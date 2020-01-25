@@ -15,16 +15,16 @@ import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 import scala.jdk.CollectionConverters._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait ParseCatalogueRecord {
   def parse(parseRequest: ParseRequest): Future[ParseResponse]
 }
 
 class ParseCatalogueRecordImpl extends ParseCatalogueRecord {
-  implicit val global = scala.concurrent.ExecutionContext.global
   val checkParseRequestForBadRecord: (ParseRequest => ParseRequest) = parseRequest => {
     Option(parseRequest.isoRecord) match {
-      case Some(value) => if(isEmptyTrim(parseRequest.isoRecord)) throw new BadRequestException("ISO Record not found") else parseRequest
+      case Some(value) => if (isEmptyTrim(parseRequest.isoRecord)) throw new BadRequestException("ISO Record not found") else parseRequest
       case None => throw new BadRequestException("ISO Record not found")
     }
   }
@@ -54,8 +54,8 @@ class ParseCatalogueRecordImpl extends ParseCatalogueRecord {
     )
     NGLRecord(leader, controlFields, dataFields)
   }
-  val convertMARCListToNGLList:  ((List[Record], String))  => ((List[NGLRecord], String))  = tuple => {
-    (tuple._1.map(mapMARC4JRecordToNGLRecord),tuple._2)
+  val convertMARCListToNGLList: ((List[Record], String)) => ((List[NGLRecord], String)) = tuple => {
+    (tuple._1.map(mapMARC4JRecordToNGLRecord), tuple._2)
   }
 
   override def parse(parseRequest: ParseRequest): Future[ParseResponse] = {
@@ -64,6 +64,7 @@ class ParseCatalogueRecordImpl extends ParseCatalogueRecord {
       .map(checkIfRecordIsNotBadMARCRecord)
       .map(convertMarcStreamToRecords)
       .map(convertMARCListToNGLList)
-      .map(tuple => ParseResponse(tuple._1,UUIDGenerator.generateReturnRequestId(tuple._2)))
+      .map(tuple => ParseResponse(tuple._1, UUIDGenerator.generateReturnRequestId(tuple._2)))
   }
 }
+

@@ -4,8 +4,8 @@ import marcModel._
 
 package object importCatalogueModel {
 
-  case class ParseRequest(val isoRecord: String, val requestId: String)
+  case class ParseRequest(isoRecord: String, requestId: String)
 
-  case class ParseResponse(val records: List[Record], val requestId: String)
+  case class ParseResponse(records: List[Record], requestId: String)
 
 }
